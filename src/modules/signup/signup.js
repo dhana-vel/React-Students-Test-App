@@ -5,10 +5,15 @@ class Signup extends React.Component {
     constructor(prop) {
         super(prop);
         this.signupSubmit = this.signupSubmit.bind(this);
+        this.cancelSignup = this.cancelSignup.bind(this);
     }
-    signupSubmit() {
+    cancelSignup() {
         this.props.history.push('/login');
     }
+    signupSubmit() {
+        
+    }
+
     render() {
         return (
             <div>
@@ -18,18 +23,15 @@ class Signup extends React.Component {
                     <input type="text"/>
                 </p>
                 <p>
-                    <label>Standard</label>
-                    <input type="text"/>
+                    <label>Password</label>
+                    <input type="password"/>
                 </p>
                 <p>
-                    <label>Section</label>
-                    <input type="text"/>
-                </p>
-                <p>
-                    <label>Age</label>
-                    <input type="text"/>
+                    <label>Confirm Password</label>
+                    <input type="password"/>
                 </p>
                 <input type="button" onClick={this.signupSubmit} value="Enroll" />
+                <input type="button" onClick={this.cancelSignup} value="Cancel" />
             </div>
         );
     }
