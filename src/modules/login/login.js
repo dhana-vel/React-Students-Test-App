@@ -10,7 +10,7 @@ class Login extends React.Component {
         this.loginSubmit = this.loginSubmit.bind(this);
     }
     loginSubmit () {
-        this.props.history.push('/list');
+        this.props.history.push('/dashboard');
         //return <Redirect push to="/list" />;
     }
     render() {

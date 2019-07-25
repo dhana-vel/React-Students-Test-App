@@ -5,8 +5,8 @@ import Header from "./components/header/header";
 import { BrowserRouter as Router, Route} from 'react-router-dom';
 //pages
 import Login from "./modules/login/login";
-import List from "./modules/list/list";
 import Signup from "./modules/signup/signup";
+import Dashboard from './modules/dashboard/dashboard';
 
 class App extends React.Component {
   render() {
@@ -30,7 +30,7 @@ class App extends React.Component {
         <div className="main-container">
           <Router>
             <Route exact path = "/" component = {Login}/>
-            <Route path = "/list" component = {List} />
+            <Route path = "/dashboard" component = {Dashboard} />
             <Route path = "/login" component = {Login} />
             <Route path = "/signup" component = {Signup} />
           </Router>
