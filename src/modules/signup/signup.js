@@ -11,13 +11,13 @@ class Signup extends React.Component {
         this.props.history.push('/login');
     }
     signupSubmit() {
-        
+
     }
 
     render() {
         return (
             <div>
-                <h3>Student Form</h3>
+                <h3>Admin Form</h3>
                 <p>
                     <label>Name</label>
                     <input type="text"/>
