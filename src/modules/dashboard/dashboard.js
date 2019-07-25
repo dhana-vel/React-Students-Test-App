@@ -28,6 +28,9 @@ class Dashboard extends React.Component {
         return (
             <div className="align-center">
                 <h3>Students Data</h3>
+                <p>
+                    <input type="button" value="Add" />
+                </p>
                 <table>
                     <tbody>
                         <tr>
@@ -39,7 +42,9 @@ class Dashboard extends React.Component {
                         data = {person} />)}
                     </tbody>
                 </table>
+                <p>
                 <Link to="/login">Logout</Link>
+                </p>
             </div>
         );
     }
@@ -52,6 +57,9 @@ class TableRow extends React.Component {
              <td>{this.props.data.id}</td>
              <td>{this.props.data.name}</td>
              <td>{this.props.data.age}</td>
+             <td>
+                 <input type="button" value="Delete" />
+             </td>
           </tr>
        );
     }
