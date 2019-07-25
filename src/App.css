@@ -32,10 +32,38 @@
   }
 }
 
+
+/* page css */
+
+.html, body {
+  min-height: 100%;
+}
+
 .main-container {
   text-align: center;
 }
 
 .align-center {
   text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+.visible {
+  display: block;
+  width: 200px;
+  height: auto;
+  max-height: 200px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  border: 1px solid #000000;
+  z-index: 10;
+  background-color:#fff;
+  box-shadow: 0 0 0 9999px rgba(0,0,0,0.5);
 }

@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 class Dashboard extends React.Component {
     constructor () {
         super();
+        this.handleCreate = this.handleCreate.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
         this.state = {
             data: 
             [
@@ -21,15 +23,29 @@ class Dashboard extends React.Component {
                   "name":"Baz",
                   "age":"40"
                }
-            ]
+            ],
+            shown: false
          };
     }
+
+    handleCreate() {
+        this.setState({
+            shown: true
+        });
+    }
+
+    handleCancel() {
+        this.setState({
+            shown: false
+        });
+    }
+
     render() {
         return (
             <div className="align-center">
                 <h3>Students Data</h3>
                 <p>
-                    <input type="button" value="Add" />
+                    <input type="button" value="Add" onClick={this.handleCreate} />
                 </p>
                 <table>
                     <tbody>
@@ -45,6 +61,16 @@ class Dashboard extends React.Component {
                 <p>
                 <Link to="/login">Logout</Link>
                 </p>
+                <div id="create-dialog" className={this.state.shown ? 'visible' : 'hidden'}>
+                    <h4>Add Data</h4>
+                    <p><input type="text" placeholder="name" /></p>
+                    <p><input type="text" placeholder="age" /></p>
+                    <p><input type="text" placeholder="id" /></p>
+                    <p>
+                        <input type="button" onClick={this.saveData} value="Create" />
+                        <input type="button" value="Cancel" onClick={this.handleCancel} />
+                    </p>
+                </div>
             </div>
         );
     }
