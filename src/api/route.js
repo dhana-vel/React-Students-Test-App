@@ -36,4 +36,33 @@ httpRoutes.route('/delete/:id').get((req, res) => {
   });
 });
 
+//edit
+httpRoutes.route('/edit/:id').get((req, res) => {
+  let id = req.params.id;
+  Data.findById(id, (err, result) => {
+      res.json(result);
+  });
+});
+
+
+//update
+httpRoutes.route('/update/:id').post((req, res) => {
+  Data.findById({_id: req.params.id}, (err, response) => {
+    if (!response)
+      res.status(404).send("data is not found");
+    else {
+        response.id = req.body.id;
+        response.name = req.body.name;
+        response.age = req.body.age;
+
+        response.save().then(response => {
+          res.json('Successfully updated');
+      })
+      .catch(err => {
+            res.status(400).send("unable to update the database");
+      });
+    }
+  });
+});
+
 module.exports = httpRoutes;

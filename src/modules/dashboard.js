@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+//import TableRow from './TableRow';
 
 class Dashboard extends React.Component {
     constructor () {
@@ -11,6 +12,8 @@ class Dashboard extends React.Component {
         this.handleCreate = this.handleCreate.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.saveData = this.saveData.bind(this);
+        this.deleteData = this.deleteData.bind(this);
+        this.editData = this.editData.bind(this);
         this.state = {
             data: [],
             shown: false,
@@ -18,6 +21,9 @@ class Dashboard extends React.Component {
             name: '',
             age: ''
          };
+         this.btnLabel = "Create";
+         this.popupCaption = "Add";
+         this.isEditView = false;
     }
 
     getListFromDb() {
@@ -35,6 +41,8 @@ class Dashboard extends React.Component {
     }
 
     handleCreate() {
+        this.btnLabel = "Create";
+        this.popupCaption = "Add";
         this.setState({
             shown: true
         });
@@ -42,18 +50,32 @@ class Dashboard extends React.Component {
 
     handleCancel() {
         this.setState({
+            id: '',
+            name: '',
+            age: '',
             shown: false
         });
+        this.isEditView = false;
     }
 
-    saveData() {
+    saveData(e) {
+        e.preventDefault();
         const obj = {
             id: this.state.id,
             name: this.state.name,
             age: this.state.age
         };
-        axios.post('http://localhost:4000/school/add', obj)
-        .then(res => {this.getListFromDb();console.log(res.data);});
+        let url;
+        if (!this.isEditView) {
+            url = 'http://localhost:4000/school/add';
+        } else {
+            url = 'http://localhost:4000/school/update/' + e.target.id;
+        }
+        axios.post(url, obj)
+        .then(res => {
+            this.getListFromDb();
+            console.log(res.data);
+        });
         this.handleCancel();
         this.setState({
             id: '',
@@ -83,6 +105,32 @@ class Dashboard extends React.Component {
         });
     }
 
+    deleteData(e) {
+        axios.get('http://localhost:4000/school/delete/' + e.target.id)
+        .then(res => {
+            this.getListFromDb();
+        });
+    }
+
+    editData(e) {
+        this.isEditView = true;
+        this.btnLabel = "Update";
+        this.popupCaption = "Edit";
+        this.setState({
+            shown: true
+        });
+        axios.get('http://localhost:4000/school/edit/' + e.target.id)
+        .then(res => {
+            console.log(res);
+            this.setState({
+                id: res.data.id,
+                name: res.data.name,
+                age: res.data.age,
+                _id: res.data._id
+            });
+        });
+    }
+
     render() {
         return (
             <div className="align-center">
@@ -97,20 +145,34 @@ class Dashboard extends React.Component {
                             <th>Name</th>
                             <th>Age</th>
                         </tr>
-                        {this.state.data.map((person, i) => <TableRow key = {i} 
-                        data = {person} />)}
+                        {this.state.data.length === 0 && (<span>No rows found</span>)}
+                        {/* {this.state.data.map((person, i) => <TableRow key = {i} 
+                        data = {person} />)} */}
+                        {this.state.data.map(( person, index ) => {
+                            return (
+                                <tr key={index}>
+                                    <td>{person.id}</td>
+                                    <td>{person.name}</td>
+                                    <td>{person.age}</td>
+                                    <td>
+                                        <button id={person._id} onClick={this.deleteData}>Delete</button>
+                                        <button id={person._id} onClick={this.editData}>Edit</button>
+                                    </td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
                 <p>
                 <Link to="/login">Logout</Link>
                 </p>
                 <div id="create-dialog" className={this.state.shown ? 'visible' : 'hidden'}>
-                    <h4>Add Data</h4>
+                    <h4>{this.popupCaption}</h4>
                     <p><input type="text" placeholder="id" value={this.state.id} onChange={this.onChangeStudentId} /></p>
                     <p><input type="text" placeholder="name" value={this.state.name} onChange={this.onChangeStudentName} /></p>
                     <p><input type="text" placeholder="age" value={this.state.age} onChange={this.onChangeStudentAge} /></p>
                     <p>
-                        <input type="button" onClick={this.saveData} value="Create" />
+                        <input type="button" id={this.isEditView ? this.state._id : ''} onClick={this.saveData} value={this.btnLabel} />
                         <input type="button" value="Cancel" onClick={this.handleCancel} />
                     </p>
                 </div>
@@ -118,30 +180,5 @@ class Dashboard extends React.Component {
         );
     }
 }
-
-class TableRow extends React.Component {
-    constructor(props) {
-        super(props);
-        this.deleteData = this.deleteData.bind(this);
-    }
-
-    deleteData() {
-        axios.get('http://localhost:4000/school/delete/' + this.props.data._id)
-        .then(res => console.log(res.data));
-    }
-
-    render() {
-       return (
-          <tr>
-             <td>{this.props.data.id}</td>
-             <td>{this.props.data.name}</td>
-             <td>{this.props.data.age}</td>
-             <td>
-                 <button value="Delete" onClick={this.deleteData}>Delete</button>
-             </td>
-          </tr>
-       );
-    }
- }
 
 export default Dashboard;
