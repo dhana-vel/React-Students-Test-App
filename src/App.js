@@ -4,9 +4,9 @@ import './App.css';
 import Header from "./components/header/header";
 import { BrowserRouter as Router, Route} from 'react-router-dom';
 //pages
-import Login from "./modules/login/login";
-import Signup from "./modules/signup/signup";
-import Dashboard from './modules/dashboard/dashboard';
+import Login from "./modules/login";
+import Signup from "./modules/signup";
+import Dashboard from './modules/dashboard';
 
 class App extends React.Component {
   render() {
