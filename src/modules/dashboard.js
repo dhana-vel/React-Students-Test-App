@@ -126,8 +126,8 @@ class TableRow extends React.Component {
     }
 
     deleteData() {
-        axios.get('http://localhost:4000/school/delete/' + this.props.data.id)
-        .then(res => {this.getListFromDb();console.log(res.data);});
+        axios.get('http://localhost:4000/school/delete/' + this.props.data._id)
+        .then(res => console.log(res.data));
     }
 
     render() {

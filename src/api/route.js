@@ -20,7 +20,7 @@ httpRoutes.route('/').get((req, res) => {
 httpRoutes.route('/add').post((req, res) => {
   let data = new Data(req.body);
   data.save()
-  .then(business => {
+  .then(response => {
     res.status(200).json({'school': 'data in added successfully'});
   })
   .catch(err => {
@@ -30,7 +30,7 @@ httpRoutes.route('/add').post((req, res) => {
 
 //delete
 httpRoutes.route('/delete/:id').get((req, res) => {
-  Data.findByIdAndRemove({_id: req.params.id}, (err, business) => {
+  Data.findByIdAndRemove({_id: req.params.id}, (err, response) => {
       if(err) res.json(err);
       else res.json('Successfully removed');
   });
