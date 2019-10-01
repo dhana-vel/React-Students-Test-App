@@ -6,19 +6,19 @@ let Data = require('./data');
 
 // get data from the list
 httpRoutes.route('/').get((req, res) => {
-  Data.find((err, businesses) => {
+  Data.Items.find((err, items) => {
     if(err){
       console.log(err);
     }
     else {
-      res.json(businesses);
+      res.json(items);
     }
   });
 });
 
 //add
 httpRoutes.route('/add').post((req, res) => {
-  let data = new Data(req.body);
+  let data = new Data.Items(req.body);
   data.save()
   .then(response => {
     res.status(200).json({'school': 'data in added successfully'});
@@ -30,7 +30,7 @@ httpRoutes.route('/add').post((req, res) => {
 
 //delete
 httpRoutes.route('/delete/:id').get((req, res) => {
-  Data.findByIdAndRemove({_id: req.params.id}, (err, response) => {
+  Data.Items.findByIdAndRemove({_id: req.params.id}, (err, response) => {
       if(err) res.json(err);
       else res.json('Successfully removed');
   });
@@ -39,7 +39,7 @@ httpRoutes.route('/delete/:id').get((req, res) => {
 //edit
 httpRoutes.route('/edit/:id').get((req, res) => {
   let id = req.params.id;
-  Data.findById(id, (err, result) => {
+  Data.Items.findById(id, (err, result) => {
       res.json(result);
   });
 });
@@ -47,7 +47,7 @@ httpRoutes.route('/edit/:id').get((req, res) => {
 
 //update
 httpRoutes.route('/update/:id').post((req, res) => {
-  Data.findById({_id: req.params.id}, (err, response) => {
+  Data.Items.findById({_id: req.params.id}, (err, response) => {
     if (!response)
       res.status(404).send("data is not found");
     else {
@@ -62,6 +62,17 @@ httpRoutes.route('/update/:id').post((req, res) => {
             res.status(400).send("unable to update the database");
       });
     }
+  });
+});
+
+httpRoutes.route('/signup').post((req, res) => {
+  let data = new Data.LoginUsers(req.body);
+  data.save()
+  .then(response => {
+    res.status(200).json({'school': 'signup data in added successfully'});
+  })
+  .catch(err => {
+  res.status(400).send("unable to save to database");
   });
 });
 
