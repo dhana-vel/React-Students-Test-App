@@ -4,8 +4,8 @@ import axios from 'axios';
 //import TableRow from './TableRow';
 
 class Dashboard extends React.Component {
-    constructor () {
-        super();
+    constructor (props) {
+        super(props);
         this.onChangeStudentId = this.onChangeStudentId.bind(this);
         this.onChangeStudentName = this.onChangeStudentName.bind(this);
         this.onChangeStudentAge = this.onChangeStudentAge.bind(this);
@@ -134,6 +134,7 @@ class Dashboard extends React.Component {
     render() {
         return (
             <div className="align-center">
+                <h2>Welcome {this.props.location.loginName}</h2>
                 <h3>Students Data</h3>
                 <p>
                     <input type="button" value="Add" onClick={this.handleCreate} />
