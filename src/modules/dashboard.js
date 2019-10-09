@@ -11,15 +11,19 @@ class Dashboard extends React.Component {
         this.onChangeStudentAge = this.onChangeStudentAge.bind(this);
         this.handleCreate = this.handleCreate.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-        this.saveData = this.saveData.bind(this);
+        this.createData = this.createData.bind(this);
         this.deleteData = this.deleteData.bind(this);
         this.editData = this.editData.bind(this);
+        this.onClickSearch = this.onClickSearch.bind(this);
+        this.onChangeSearchId = this.onChangeSearchId.bind(this);
+        //set the data
         this.state = {
             data: [],
             shown: false,
             id: '',
             name: '',
-            age: ''
+            age: '',
+            searchId: ''
          };
          this.btnLabel = "Create";
          this.popupCaption = "Add";
@@ -33,7 +37,7 @@ class Dashboard extends React.Component {
         })
         .catch((error) => {
           console.log(error);
-        })
+        });
     }
 
     componentDidMount() {
@@ -58,7 +62,7 @@ class Dashboard extends React.Component {
         this.isEditView = false;
     }
 
-    saveData(e) {
+    createData(e) {
         e.preventDefault();
         const obj = {
             id: this.state.id,
@@ -105,6 +109,36 @@ class Dashboard extends React.Component {
         });
     }
 
+    onChangeSearchId(e) {
+        e.preventDefault();
+        if (e.target.value === "") {
+            this.setState({
+                searchId: ''
+            });
+            this.getListFromDb();
+            return;
+        }
+        this.setState({
+            searchId: e.target.value
+        });
+    }
+
+    onClickSearch(e) {
+        e.preventDefault();
+        axios.get('http://localhost:4000/school/search/' +  this.state.searchId)
+        .then(response => {
+            let arr = [];
+            arr.push(response.data);
+            this.setState({
+                data: []
+            });
+            this.setState({ data: arr });
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
     deleteData(e) {
         axios.get('http://localhost:4000/school/delete/' + e.target.id)
         .then(res => {
@@ -139,6 +173,10 @@ class Dashboard extends React.Component {
                 <p>
                     <input type="button" value="Add" onClick={this.handleCreate} />
                 </p>
+                <div>
+                    <input type="search" placeholder="Search with Id" value={this.state.searchId} onChange={this.onChangeSearchId} />
+                    <button onClick={this.onClickSearch}>Search</button>
+                </div>
                 <table>
                     <tbody>
                         <tr>
@@ -173,7 +211,7 @@ class Dashboard extends React.Component {
                     <p><input type="text" placeholder="name" value={this.state.name} onChange={this.onChangeStudentName} /></p>
                     <p><input type="text" placeholder="age" value={this.state.age} onChange={this.onChangeStudentAge} /></p>
                     <p>
-                        <input type="button" id={this.isEditView ? this.state._id : ''} onClick={this.saveData} value={this.btnLabel} />
+                        <input type="button" id={this.isEditView ? this.state._id : ''} onClick={this.createData} value={this.btnLabel} />
                         <input type="button" value="Cancel" onClick={this.handleCancel} />
                     </p>
                 </div>

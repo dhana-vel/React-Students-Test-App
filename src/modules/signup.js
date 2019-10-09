@@ -25,7 +25,10 @@ class Signup extends React.Component {
         };
         axios.post('http://localhost:4000/school/signup', obj)
         .then(res => {
-            this.props.history.push('/dashboard');
+            this.props.history.push({
+                pathname: '/dashboard',
+                loginName: this.state.userName
+            });
             console.log(res.data);
         });
     }

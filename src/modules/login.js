@@ -1,5 +1,6 @@
 import React from "react";
 import { withRouter, Link } from 'react-router-dom';
+import axios from 'axios';
 //import { Dashboard } from './dashboard';
 //import { Button } from 'reactstrap';
 //import { Redirect } from "react-router";
@@ -18,9 +19,13 @@ class Login extends React.Component {
     }
 
     loginSubmit () {
-        this.props.history.push({
-            pathname: '/dashboard',
-            loginName: this.state.login_user
+        axios.get('http://localhost:4000/school/user/' + this.state.login_user)
+        .then(res => {
+            console.log(res);
+            this.props.history.push({
+                pathname: '/dashboard',
+                loginName: this.state.login_user
+            });
         });
         //return <Redirect push to="/list" />;
     }

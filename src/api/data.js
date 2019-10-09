@@ -32,7 +32,8 @@ let LoginUsers = new Schema(
 
 
 let data = mongoose.model('Items', Items, 'collect1');
-let user = mongoose.model('LoginUsers', LoginUsers, 'collect1');
+//let user = mongoose.model('LoginUsers', LoginUsers, 'collect1'); /* multiple schema in one collection */
+let user = mongoose.model('LoginUsers', LoginUsers, 'collect2');
 
 // export the new Schema so we could modify it using Node.js
 //module.exports = mongoose.model('Data', Data);

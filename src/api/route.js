@@ -1,7 +1,7 @@
 const express = require('express');
 const httpRoutes = express.Router();
 
-// Require Business model in our routes module
+// Require data model in our routes module
 let Data = require('./data');
 
 // get data from the list
@@ -44,6 +44,27 @@ httpRoutes.route('/edit/:id').get((req, res) => {
   });
 });
 
+//find user
+httpRoutes.route('/user/:name').get((req, res) => {
+  Data.LoginUsers.findOne({user_name: req.params.name}, (err, result) => {
+    if (result) {
+      res.json(result);
+    } else {
+      res.status(400).send('Username "' + req.params.name + '" is not available');
+    }
+  });
+});
+
+//search
+httpRoutes.route('/search/:id').get((req, res) => {
+  Data.Items.findOne({id: req.params.id}, (err, result) => {
+    if (result) {
+      res.json(result);
+    } else {
+      res.status(500).send("data is not available");
+    }
+  });
+});
 
 //update
 httpRoutes.route('/update/:id').post((req, res) => {
@@ -66,13 +87,20 @@ httpRoutes.route('/update/:id').post((req, res) => {
 });
 
 httpRoutes.route('/signup').post((req, res) => {
-  let data = new Data.LoginUsers(req.body);
-  data.save()
-  .then(response => {
-    res.status(200).json({'school': 'signup data in added successfully'});
-  })
-  .catch(err => {
-  res.status(400).send("unable to save to database");
+  // validate
+  Data.LoginUsers.findOne({user_name: req.body.user_name}, (err, result) => {
+    if (result) {
+      res.status(400).send('Username "' + req.body.user_name + '" is not taken');
+    } else {
+      let data = new Data.LoginUsers(req.body);
+      data.save()
+      .then(response => {
+        res.status(200).json({'school': 'signup data in added successfully'});
+      })
+      .catch(err => {
+      res.status(400).send("unable to save to database");
+      });
+    }
   });
 });
 
