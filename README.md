@@ -16,4 +16,4 @@ You will also see any lint errors in the console.
 cd students-app/src/api
 and then run node server.js
 It will enable mongo db connection.
-Do signup and you can see the main dashboard of the project which all CRUD operations.
+Do signup and you can see the main dashboard of the project which includes all CRUD operations.
